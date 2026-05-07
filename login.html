@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novatrust - Login</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #1e3a8a, #0b1220 70%);
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 360px;
+      padding: 30px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: auto;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+      color: #0b1220;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+      background: #e5e7eb;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 11px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">NT</div>
+
+    <h2>Secure Login</h2>
+
+    <input type="text" placeholder="Username">
+    <input type="password" placeholder="Password">
+
+    <button class="btn">Login</button>
+
+    <div class="footer">
+      Novatrust Private Banking Access
+    </div>
+
+  </div>
+
+</body>
+</html>
