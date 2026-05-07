@@ -127,12 +127,14 @@
 
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <div>Novatrust Private Banking</div>
 
   <div style="display:flex; gap:10px; align-items:center;">
     <div>Secure</div>
 
+    <!-- MANUAL LOGOUT ONLY -->
     <button onclick="logout()" style="
       background: rgba(255,255,255,0.1);
       border: none;
@@ -148,7 +150,9 @@
 
 <div class="container">
 
+  <!-- BALANCE -->
   <div class="card">
+
     <div class="balance">$700,000</div>
 
     <div class="accounts">
@@ -163,6 +167,7 @@
       <button class="btn dark">Invest</button>
       <button class="btn dark" onclick="toggleHistory()">History</button>
     </div>
+
   </div>
 
 </div>
@@ -183,25 +188,20 @@
 
 <script>
 
-let txns = [];
-let loaded = 0;
+/* ❌ NO AUTO LOGOUT ANYMORE */
 
-/* ✅ FIXED AUTH CHECK (NO AUTO LOGOUT BUG) */
-window.addEventListener("load", function () {
-  const auth = sessionStorage.getItem("auth");
-
-  if (auth !== "true") {
-    window.location.href = "index.html";
-  }
-});
-
-/* LOGOUT (FIXED) */
+/* MANUAL LOGOUT ONLY */
 function logout() {
   sessionStorage.clear();
   window.location.href = "index.html";
 }
 
-/* SEND (SAFE) */
+/* OPEN SEND */
+function openSend() {
+  document.getElementById("sendModal").style.display = "flex";
+}
+
+/* SEND FUNCTION */
 function sendMoney() {
 
   let amt = document.getElementById("amount").value;
