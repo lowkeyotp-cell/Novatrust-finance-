@@ -65,35 +65,6 @@
   .light { background: white; color: #0b1220; }
   .dark { background: rgba(255,255,255,0.1); color: white; }
 
-  /* SUPPORT */
-  .support {
-    margin-top: 25px;
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 15px;
-  }
-
-  .chatbox {
-    background: rgba(0,0,0,0.25);
-    padding: 12px;
-    border-radius: 10px;
-    min-height: 60px;
-    margin-bottom: 10px;
-  }
-
-  .qbtn {
-    margin-top: 6px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  /* HISTORY */
   .history {
     display: none;
     margin-top: 20px;
@@ -193,24 +164,6 @@
     </div>
   </div>
 
-  <!-- AI SUPPORT -->
-  <div class="support">
-    <h3>AI Support Assistant</h3>
-
-    <div id="chat" class="chatbox">Tap a question below</div>
-
-    <button class="qbtn" onclick="ask('withdraw')">How do I withdraw money?</button>
-    <button class="qbtn" onclick="ask('transfer')">How do I transfer funds?</button>
-    <button class="qbtn" onclick="ask('restricted')">Why is my account restricted?</button>
-    <button class="qbtn" onclick="ask('time')">How long does transfer take?</button>
-  </div>
-
-  <!-- HISTORY -->
-  <div id="history" class="history">
-    <h3>Transaction History</h3>
-    <div id="txns"></div>
-  </div>
-
 </div>
 
 <!-- SEND MODAL -->
@@ -223,7 +176,8 @@
     <input placeholder="Account Number">
     <input id="amount" placeholder="Amount ($)">
 
-    <button class="sendbtn" onclick="sendMoney()">Submit Request</button>
+    <!-- FIXED BUTTON TEXT -->
+    <button class="sendbtn" onclick="sendMoney()">Send</button>
   </div>
 </div>
 
@@ -237,91 +191,109 @@ function logout() {
   window.location.href = "index.html";
 }
 
-/* SEND */
+/* OPEN MODAL */
 function openSend() {
   document.getElementById("sendModal").style.display = "flex";
 }
 
+/* SAFE SEND FUNCTION (NO CRASH) */
 function sendMoney() {
 
   let amt = document.getElementById("amount").value;
 
-  if (!amt || amt <= 0) return alert("Enter valid amount");
+  if (!amt || amt <= 0) {
+    alert("Enter valid amount");
+    return;
+  }
 
   document.getElementById("sendModal").style.display = "none";
 
-  document.getElementById("chat").innerText =
-    "Transfer request submitted. Please contact account owner for approval.";
+  // remove old popup if exists
+  let old = document.getElementById("popupBox");
+  if (old) old.remove();
 
-  addTransaction(amt);
-}
+  let popup = document.createElement("div");
+  popup.id = "popupBox";
+  popup.style.position = "fixed";
+  popup.style.top = "0";
+  popup.style.left = "0";
+  popup.style.width = "100%";
+  popup.style.height = "100%";
+  popup.style.background = "rgba(0,0,0,0.75)";
+  popup.style.display = "flex";
+  popup.style.justifyContent = "center";
+  popup.style.alignItems = "center";
+  popup.style.zIndex = "9999";
 
-/* AI CHAT BOT */
-function ask(type) {
+  popup.innerHTML = `
+    <div style="
+      background:#111a2e;
+      padding:25px;
+      border-radius:14px;
+      text-align:center;
+      width:300px;
+      color:white;
+    ">
+      <div style="
+        width:40px;
+        height:40px;
+        border:4px solid #4ade80;
+        border-top:4px solid transparent;
+        border-radius:50%;
+        margin:auto;
+        animation:spin 1s linear infinite;
+      "></div>
 
-  let chat = document.getElementById("chat");
+      <p style="margin-top:15px;font-weight:bold;">
+        Processing Transfer...
+      </p>
 
-  let replies = {
-    withdraw: "Withdrawals require approval from the account owner.",
-    transfer: "Transfers are processed after compliance verification.",
-    restricted: "Your account is under review. Contact support.",
-    time: "Transfers usually take 1–3 business days."
-  };
-
-  let text = replies[type];
-
-  chat.innerHTML = "Typing...";
-
-  setTimeout(() => {
-    chat.innerHTML = text;
-  }, 1000);
-}
-
-/* HISTORY */
-function addTransaction(amount) {
-
-  let row = document.createElement("div");
-  row.className = "txn";
-
-  let type = "TRANSFER PENDING";
-  let time = new Date().toLocaleString();
-
-  row.innerHTML = `
-    <span>${time} - ${type}</span>
-    <span class="debit">-$${amount}</span>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
   `;
 
-  txns.prepend(row);
-}
+  document.body.appendChild(popup);
 
-/* DEFAULT SAMPLE HISTORY */
-function loadHistory() {
+  setTimeout(() => {
 
-  for (let i = 1; i <= 20; i++) {
+    popup.innerHTML = `
+      <div style="
+        background:#111a2e;
+        padding:25px;
+        border-radius:14px;
+        text-align:center;
+        width:300px;
+        color:#4ade80;
+      ">
+        <h3>✔ Transfer Sent</h3>
+        <p style="color:white;margin-top:10px;">
+          Transfer request submitted successfully.<br>
+          Please contact account owner for approval.
+        </p>
 
-    let row = document.createElement("div");
-    row.className = "txn";
-
-    let credit = Math.random() > 0.5;
-    let amount = Math.floor(Math.random() * 4000) + 100;
-
-    row.innerHTML = `
-      <span>${new Date().toLocaleString()} - Transaction</span>
-      <span class="${credit ? 'credit' : 'debit'}">
-        ${credit ? '+' : '-'}$${amount}
-      </span>
+        <button onclick="document.getElementById('popupBox').remove()" 
+          style="
+            margin-top:15px;
+            padding:10px;
+            width:100%;
+            border:none;
+            border-radius:8px;
+            background:#4ade80;
+            font-weight:bold;
+            cursor:pointer;
+          ">
+          Close
+        </button>
+      </div>
     `;
 
-    txns.appendChild(row);
-  }
+  }, 2000);
 }
-
-function toggleHistory() {
-  let h = document.getElementById("history");
-  h.style.display = h.style.display === "block" ? "none" : "block";
-}
-
-loadHistory();
 
 </script>
 
