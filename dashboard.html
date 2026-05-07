@@ -73,6 +73,14 @@
     border-radius: 15px;
   }
 
+  .chat {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    min-height: 60px;
+  }
+
   .qbtn {
     margin-top: 8px;
     width: 100%;
@@ -83,14 +91,6 @@
     color: white;
     cursor: pointer;
     text-align: left;
-  }
-
-  .chat {
-    margin-top: 10px;
-    padding: 12px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 10px;
-    min-height: 60px;
   }
 
   /* HISTORY */
@@ -114,6 +114,44 @@
 
   .credit { color: #4ade80; }
   .debit { color: #f87171; }
+
+  /* SEND MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .box {
+    background: #111a2e;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+  }
+
+  .box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+  }
+
+  .sendbtn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 12px;
+    background: #4ade80;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 </style>
 </head>
 
@@ -129,7 +167,7 @@
   <!-- BALANCE -->
   <div class="card">
 
-    <div class="balance">$700,000</div>
+    <div class="balance" id="balance">$700,000</div>
 
     <div class="accounts">
       Checking: <b>$10,000</b><br>
@@ -138,7 +176,7 @@
     </div>
 
     <div class="grid">
-      <button class="btn light">Send</button>
+      <button class="btn light" onclick="openSend()">Send</button>
       <button class="btn light">Receive</button>
       <button class="btn dark">Invest</button>
       <button class="btn dark" onclick="toggleHistory()">History</button>
@@ -148,6 +186,7 @@
 
   <!-- SUPPORT AI -->
   <div class="support">
+
     <h3>Customer Support AI</h3>
 
     <div id="chat" class="chat">Select a question</div>
@@ -155,59 +194,114 @@
     <button class="qbtn" onclick="reply()">How do I withdraw money?</button>
     <button class="qbtn" onclick="reply()">How do I transfer funds?</button>
     <button class="qbtn" onclick="reply()">Why is my account restricted?</button>
+
   </div>
 
   <!-- HISTORY -->
   <div id="history" class="history">
-    <h3>Transaction History (Last 12 Months)</h3>
+    <h3>Transaction History</h3>
     <div id="txns"></div>
   </div>
 
 </div>
 
+<!-- SEND MODAL -->
+<div id="sendModal" class="modal">
+  <div class="box">
+    <h3>Send Money</h3>
+
+    <input id="name" placeholder="Recipient Name">
+    <input id="amount" placeholder="Amount">
+
+    <button class="sendbtn" onclick="sendMoney()">Confirm Transfer</button>
+  </div>
+</div>
+
 <script>
 
+let balance = 700000;
+
+/* AI SUPPORT */
 function reply() {
   document.getElementById("chat").innerText =
-  "Please contact the account owner or assigned officer for approval and assistance.";
+  "Please contact the account owner or assigned officer for approval.";
 }
 
-/* TOGGLE HISTORY */
+/* HISTORY TOGGLE */
 function toggleHistory() {
-  let box = document.getElementById("history");
-
-  if (box.style.display === "block") {
-    box.style.display = "none";
-  } else {
-    box.style.display = "block";
-  }
+  let h = document.getElementById("history");
+  h.style.display = h.style.display === "block" ? "none" : "block";
 }
 
-/* GENERATE 70 REALISTIC TRANSACTIONS */
-const txns = document.getElementById("txns");
+/* SEND */
+function openSend() {
+  document.getElementById("sendModal").style.display = "flex";
+}
 
-let types = ["Salary Deposit","Apple Store","Transfer","Investment Return","Netflix","Uber","Amazon","Bank Fee","Crypto Buy","Utility Bill"];
+function sendMoney() {
+  let amt = parseInt(document.getElementById("amount").value);
+
+  if (!amt || amt <= 0) return alert("Invalid amount");
+
+  if (amt > balance) return alert("Insufficient balance");
+
+  balance -= amt;
+
+  document.getElementById("balance").innerText = "$" + balance.toLocaleString();
+
+  document.getElementById("sendModal").style.display = "none";
+
+  document.getElementById("chat").innerText =
+    "Transfer initiated. Contact account owner for approval.";
+
+}
+
+/* GENERATE 70 TRANSACTIONS */
+let txns = document.getElementById("txns");
+let data = [];
 
 for (let i = 1; i <= 70; i++) {
 
+  let types = ["Salary","Apple Store","Transfer","Investment","Netflix","Uber","Amazon","Fee"];
   let type = types[Math.floor(Math.random() * types.length)];
-  let amount = Math.floor(Math.random() * 5000) + 50;
-  let isCredit = Math.random() > 0.6;
+  let amount = Math.floor(Math.random() * 4000) + 50;
+  let credit = Math.random() > 0.5;
 
   let date = new Date();
-  date.setDate(date.getDate() - i * 5);
+  date.setDate(date.getDate() - i * 3);
 
-  let time = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-
-  txns.innerHTML += `
-    <div class="txn">
-      <span>${time} - ${type}</span>
-      <span class="${isCredit ? 'credit' : 'debit'}">
-        ${isCredit ? '+' : '-'}$${amount}
-      </span>
-    </div>
-  `;
+  data.push({
+    time: date.toLocaleString(),
+    type,
+    amount,
+    credit
+  });
 }
+
+/* LOAD HISTORY */
+let index = 0;
+function loadMore() {
+  for (let i = index; i < index + 10 && i < data.length; i++) {
+
+    txns.innerHTML += `
+      <div class="txn">
+        <span>${data[i].time} - ${data[i].type}</span>
+        <span class="${data[i].credit ? 'credit' : 'debit'}">
+          ${data[i].credit ? '+' : '-'}$${data[i].amount}
+        </span>
+      </div>
+    `;
+  }
+  index += 10;
+}
+
+document.getElementById("history").addEventListener("scroll", function () {
+  if (this.scrollTop + this.clientHeight >= this.scrollHeight - 5) {
+    loadMore();
+  }
+});
+
+loadMore();
 
 </script>
 
