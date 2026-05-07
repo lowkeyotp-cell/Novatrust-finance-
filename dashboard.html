@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Novatrust Dashboard</title>
+<title>Novatrust Private Banking</title>
 
 <style>
   * {
@@ -37,7 +37,7 @@
   }
 
   .balance {
-    font-size: 50px;
+    font-size: 48px;
     font-weight: 900;
   }
 
@@ -115,23 +115,23 @@
   .credit { color: #4ade80; }
   .debit { color: #f87171; }
 
-  /* SEND MODAL */
+  /* MODAL */
   .modal {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     justify-content: center;
     align-items: center;
   }
 
   .box {
     background: #111a2e;
-    padding: 20px;
-    border-radius: 12px;
-    width: 300px;
+    padding: 22px;
+    border-radius: 14px;
+    width: 320px;
   }
 
   .box input {
@@ -184,22 +184,23 @@
 
   </div>
 
-  <!-- SUPPORT AI -->
+  <!-- AI SUPPORT -->
   <div class="support">
 
     <h3>Customer Support AI</h3>
 
-    <div id="chat" class="chat">Select a question</div>
+    <div id="chat" class="chat">Select a question below</div>
 
-    <button class="qbtn" onclick="reply()">How do I withdraw money?</button>
-    <button class="qbtn" onclick="reply()">How do I transfer funds?</button>
-    <button class="qbtn" onclick="reply()">Why is my account restricted?</button>
+    <button class="qbtn" onclick="ask('withdraw')">How do I withdraw money?</button>
+    <button class="qbtn" onclick="ask('transfer')">How do I transfer funds?</button>
+    <button class="qbtn" onclick="ask('restricted')">Why is my account restricted?</button>
+    <button class="qbtn" onclick="ask('time')">How long does transfer take?</button>
 
   </div>
 
   <!-- HISTORY -->
   <div id="history" class="history">
-    <h3>Transaction History</h3>
+    <h3>Transaction History (Last 12 Months)</h3>
     <div id="txns"></div>
   </div>
 
@@ -208,12 +209,14 @@
 <!-- SEND MODAL -->
 <div id="sendModal" class="modal">
   <div class="box">
-    <h3>Send Money</h3>
+    <h3>Secure Transfer Request</h3>
 
-    <input id="name" placeholder="Recipient Name">
-    <input id="amount" placeholder="Amount">
+    <input placeholder="Recipient Name">
+    <input placeholder="Bank Name">
+    <input placeholder="Account Number">
+    <input id="amount" placeholder="Amount ($)">
 
-    <button class="sendbtn" onclick="sendMoney()">Confirm Transfer</button>
+    <button class="sendbtn" onclick="sendMoney()">Submit Request</button>
   </div>
 </div>
 
@@ -222,77 +225,86 @@
 let balance = 700000;
 
 /* AI SUPPORT */
-function reply() {
-  document.getElementById("chat").innerText =
-  "Please contact the account owner or assigned officer for approval.";
+function ask(type) {
+
+  let chat = document.getElementById("chat");
+
+  let responses = {
+    withdraw: "Withdrawals require approval from the account owner.",
+    transfer: "Transfers are processed under compliance verification.",
+    restricted: "Your account may require verification. Contact support officer.",
+    time: "Transfers typically take 1–3 business days depending on approval."
+  };
+
+  chat.innerText = responses[type];
 }
 
-/* HISTORY TOGGLE */
-function toggleHistory() {
-  let h = document.getElementById("history");
-  h.style.display = h.style.display === "block" ? "none" : "block";
-}
-
-/* SEND */
-function openSend() {
-  document.getElementById("sendModal").style.display = "flex";
-}
-
+/* SEND (NO DEDUCTION) */
 function sendMoney() {
-  let amt = parseInt(document.getElementById("amount").value);
 
-  if (!amt || amt <= 0) return alert("Invalid amount");
+  let amt = document.getElementById("amount").value;
 
-  if (amt > balance) return alert("Insufficient balance");
-
-  balance -= amt;
-
-  document.getElementById("balance").innerText = "$" + balance.toLocaleString();
+  if (!amt || amt <= 0) {
+    alert("Enter valid amount");
+    return;
+  }
 
   document.getElementById("sendModal").style.display = "none";
 
   document.getElementById("chat").innerText =
-    "Transfer initiated. Contact account owner for approval.";
+    "Transfer request submitted. Please contact account owner for approval.";
 
+  addTransaction(amt);
 }
 
-/* GENERATE 70 TRANSACTIONS */
+/* HISTORY SYSTEM */
 let txns = document.getElementById("txns");
-let data = [];
+let all = [];
+let loaded = 0;
 
-for (let i = 1; i <= 70; i++) {
+function generate() {
 
-  let types = ["Salary","Apple Store","Transfer","Investment","Netflix","Uber","Amazon","Fee"];
-  let type = types[Math.floor(Math.random() * types.length)];
-  let amount = Math.floor(Math.random() * 4000) + 50;
-  let credit = Math.random() > 0.5;
+  let types = ["Salary","Apple Store","Amazon","Transfer","Investment","Netflix","Uber","Fee","Crypto"];
 
-  let date = new Date();
-  date.setDate(date.getDate() - i * 3);
+  for (let i = 1; i <= 70; i++) {
 
-  data.push({
-    time: date.toLocaleString(),
-    type,
-    amount,
-    credit
-  });
+    let type = types[Math.floor(Math.random() * types.length)];
+    let amount = Math.floor(Math.random() * 5000) + 100;
+    let credit = Math.random() > 0.5;
+
+    let date = new Date();
+    date.setDate(date.getDate() - i * 3);
+
+    all.push({
+      time: date.toLocaleString(),
+      type,
+      amount,
+      credit
+    });
+  }
 }
 
-/* LOAD HISTORY */
-let index = 0;
 function loadMore() {
-  for (let i = index; i < index + 10 && i < data.length; i++) {
+
+  for (let i = loaded; i < loaded + 10 && i < all.length; i++) {
 
     txns.innerHTML += `
       <div class="txn">
-        <span>${data[i].time} - ${data[i].type}</span>
-        <span class="${data[i].credit ? 'credit' : 'debit'}">
-          ${data[i].credit ? '+' : '-'}$${data[i].amount}
+        <span>${all[i].time} - ${all[i].type}</span>
+        <span class="${all[i].credit ? 'credit' : 'debit'}">
+          ${all[i].credit ? '+' : '-'}$${all[i].amount}
         </span>
       </div>
     `;
   }
-  index += 10;
+
+  loaded += 10;
+}
+
+function toggleHistory() {
+  let h = document.getElementById("history");
+  h.style.display = h.style.display === "block" ? "none" : "block";
+  if (loaded === 0) loadMore();
 }
 
 document.getElementById("history").addEventListener("scroll", function () {
@@ -301,7 +313,17 @@ document.getElementById("history").addEventListener("scroll", function () {
   }
 });
 
-loadMore();
+/* ADD NEW TRANSACTION */
+function addTransaction(amount) {
+  all.unshift({
+    time: new Date().toLocaleString(),
+    type: "TRANSFER PENDING (APPROVAL REQUIRED)",
+    amount: amount,
+    credit: false
+  });
+}
+
+generate();
 
 </script>
 
