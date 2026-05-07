@@ -1,54 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novatrust Private Banking</title>
+
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    }
+
+    body {
+      background: #f4f6fb;
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .header {
+      background: #0b1f3a;
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 15px 20px;
+      font-size: 18px;
+      font-weight: bold;
     }
 
+    /* Main container */
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* Balance card */
     .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      width: 300px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-top: 20px;
     }
 
-    h1 {
-      margin-bottom: 10px;
+    .balance {
+      font-size: 28px;
+      margin-top: 10px;
+      color: #0b1f3a;
+    }
+
+    /* Buttons */
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .btn {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
+      flex: 1;
+      padding: 12px;
       border: none;
       border-radius: 8px;
-      background: #22c55e;
+      background: #0b1f3a;
       color: white;
       cursor: pointer;
+      font-weight: bold;
     }
 
     .btn:hover {
-      background: #16a34a;
+      background: #123a6a;
+    }
+
+    /* Transactions */
+    .transaction {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .credit {
+      color: green;
+    }
+
+    .debit {
+      color: red;
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Novatrust Bank</h1>
-    <p>Secure Digital Banking Platform</p>
-    <button class="btn">Enter Dashboard</button>
+
+  <div class="header">
+    Novatrust Private Banking
   </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h3>Available Balance</h3>
+      <div class="balance">$12,450.00</div>
+
+      <div class="actions">
+        <button class="btn">Transfer</button>
+        <button class="btn">Pay Bills</button>
+        <button class="btn">Deposit</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Recent Transactions</h3>
+
+      <div class="transaction">
+        <span>Amazon Purchase</span>
+        <span class="debit">- $120</span>
+      </div>
+
+      <div class="transaction">
+        <span>Salary</span>
+        <span class="credit">+ $3,000</span>
+      </div>
+
+      <div class="transaction">
+        <span>Transfer</span>
+        <span class="debit">- $500</span>
+      </div>
+
+    </div>
+
+  </div>
+
 </body>
 </html>
