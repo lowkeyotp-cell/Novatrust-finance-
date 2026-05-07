@@ -75,6 +75,12 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  /* success pop animation */
+  @keyframes pop {
+    0% { transform: scale(0.2); opacity:0; }
+    100% { transform: scale(1); opacity:1; }
+  }
 </style>
 </head>
 
@@ -104,56 +110,76 @@ function login() {
 
   if (user === correctUser && pass === correctPass) {
 
-    // LOADING SCREEN
+    // 🔄 LOADING SCREEN
     document.body.innerHTML = `
       <div style="
         height:100vh;
         display:flex;
         justify-content:center;
         align-items:center;
+        flex-direction:column;
         background:#0b1220;
         color:white;
-        flex-direction:column;
         font-family:Arial;
       ">
         <div style="
-          width:45px;
-          height:45px;
-          border:4px solid #fff;
-          border-top:4px solid transparent;
+          width:50px;
+          height:50px;
+          border:5px solid #fff;
+          border-top:5px solid transparent;
           border-radius:50%;
           animation:spin 1s linear infinite;
         "></div>
 
         <p style="margin-top:15px;">Verifying credentials...</p>
       </div>
+
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
     `;
 
-    // SUCCESS SCREEN + REDIRECT
+    // ⏳ SUCCESS SCREEN AFTER DELAY
     setTimeout(() => {
+
       document.body.innerHTML = `
         <div style="
           height:100vh;
           display:flex;
           justify-content:center;
           align-items:center;
+          flex-direction:column;
           background:#0b1220;
           color:#4ade80;
-          flex-direction:column;
           font-family:Arial;
         ">
-          <h1>✔ Login Successful</h1>
+          <div style="
+            font-size:70px;
+            animation:pop 0.4s ease;
+          ">✔</div>
+
+          <h1>Login Successful</h1>
           <p>Redirecting to dashboard...</p>
         </div>
+
+        <style>
+          @keyframes pop {
+            0% { transform: scale(0.2); opacity:0; }
+            100% { transform: scale(1); opacity:1; }
+          }
+        </style>
       `;
 
       sessionStorage.setItem("loggedIn", "true");
 
       setTimeout(() => {
         window.location.href = "./dashboard.html";
-      }, 1500);
+      }, 2000);
 
-    }, 2000);
+    }, 2500);
 
   } else {
     alert("Invalid login credentials");
