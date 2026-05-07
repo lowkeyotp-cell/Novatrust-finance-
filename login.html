@@ -41,7 +41,6 @@
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 15px;
     backdrop-filter: blur(10px);
-    z-index: 2;
   }
 
   .logo {
@@ -60,7 +59,6 @@
 
   h2 {
     margin-bottom: 20px;
-    font-size: 22px;
   }
 
   input {
@@ -108,16 +106,38 @@
 
   <h2>Secure Login</h2>
 
-  <input type="text" placeholder="Username">
-  <input type="password" placeholder="Password">
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
 
-  <button class="btn">Login</button>
+  <button class="btn" onclick="login()">Login</button>
 
   <div class="footer">
     Novatrust Private Banking Access
   </div>
 
 </div>
+
+<script>
+function login() {
+
+  // 🔐 correct credentials
+  const correctUser = "baemax12";
+  const correctPass = "Emilybaemax1234";
+
+  // input values
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  if (user === correctUser && pass === correctPass) {
+
+    sessionStorage.setItem("loggedIn", "true");
+    window.location.href = "./dashboard.html";
+
+  } else {
+    alert("Invalid login credentials");
+  }
+}
+</script>
 
 </body>
 </html>
