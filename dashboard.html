@@ -62,103 +62,58 @@
     cursor: pointer;
   }
 
-  .light {
-    background: white;
-    color: #0b1220;
+  .light { background: white; color: #0b1220; }
+  .dark { background: rgba(255,255,255,0.1); color: white; }
+
+  /* SUPPORT */
+  .support {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 15px;
   }
 
-  .dark {
-    background: rgba(255,255,255,0.1);
-    color: white;
-  }
-
-  /* MODAL */
-  .modal {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0; left: 0;
-    background: rgba(0,0,0,0.75);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .box {
-    background: #111a2e;
-    padding: 20px;
-    border-radius: 14px;
-    width: 320px;
-  }
-
-  .box h3 {
-    margin-bottom: 10px;
-  }
-
-  .box input {
+  .qbtn {
+    margin-top: 8px;
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
     border-radius: 8px;
     border: none;
-    outline: none;
-  }
-
-  .sendbtn {
-    margin-top: 12px;
-    width: 100%;
-    padding: 12px;
-    background: #4ade80;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
+    background: rgba(255,255,255,0.1);
+    color: white;
     cursor: pointer;
+    text-align: left;
   }
 
-  /* LOADING SCREEN */
-  .loading {
+  .chat {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    min-height: 60px;
+  }
+
+  /* HISTORY */
+  .history {
     display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0b1220;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 15px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid white;
-    border-top: 5px solid transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  .txn {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
-  @keyframes spin {
-    100% { transform: rotate(360deg); }
-  }
-
-  .success {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0b1220;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #4ade80;
-    font-weight: bold;
-  }
-
-  .check {
-    font-size: 60px;
-    margin-bottom: 10px;
-  }
+  .credit { color: #4ade80; }
+  .debit { color: #f87171; }
 </style>
 </head>
 
@@ -171,7 +126,9 @@
 
 <div class="container">
 
+  <!-- BALANCE -->
   <div class="card">
+
     <div class="balance">$700,000</div>
 
     <div class="accounts">
@@ -181,67 +138,75 @@
     </div>
 
     <div class="grid">
-      <button class="btn light" onclick="openSend()">Send</button>
+      <button class="btn light">Send</button>
       <button class="btn light">Receive</button>
       <button class="btn dark">Invest</button>
-      <button class="btn dark">History</button>
+      <button class="btn dark" onclick="toggleHistory()">History</button>
     </div>
+
   </div>
 
-</div>
+  <!-- SUPPORT AI -->
+  <div class="support">
+    <h3>Customer Support AI</h3>
 
-<!-- SEND MODAL -->
-<div id="modal" class="modal">
-  <div class="box">
-    <h3>New Transfer</h3>
+    <div id="chat" class="chat">Select a question</div>
 
-    <input placeholder="Recipient Full Name">
-    <input placeholder="Account Number">
-    <input placeholder="Bank Name">
-    <input placeholder="Amount ($)">
-
-    <button class="sendbtn" onclick="processTransfer()">
-      Confirm Transfer
-    </button>
+    <button class="qbtn" onclick="reply()">How do I withdraw money?</button>
+    <button class="qbtn" onclick="reply()">How do I transfer funds?</button>
+    <button class="qbtn" onclick="reply()">Why is my account restricted?</button>
   </div>
-</div>
 
-<!-- LOADING -->
-<div id="loading" class="loading">
-  <div class="spinner"></div>
-  <p style="margin-top:15px;">Processing secure transfer...</p>
-</div>
+  <!-- HISTORY -->
+  <div id="history" class="history">
+    <h3>Transaction History (Last 12 Months)</h3>
+    <div id="txns"></div>
+  </div>
 
-<!-- SUCCESS -->
-<div id="success" class="success">
-  <div class="check">✔</div>
-  <h2>Transfer Pending Approval</h2>
-  <p>Please contact account owner for approval</p>
 </div>
 
 <script>
 
-function openSend() {
-  document.getElementById("modal").style.display = "flex";
+function reply() {
+  document.getElementById("chat").innerText =
+  "Please contact the account owner or assigned officer for approval and assistance.";
 }
 
-function processTransfer() {
+/* TOGGLE HISTORY */
+function toggleHistory() {
+  let box = document.getElementById("history");
 
-  document.getElementById("modal").style.display = "none";
-  document.getElementById("loading").style.display = "flex";
+  if (box.style.display === "block") {
+    box.style.display = "none";
+  } else {
+    box.style.display = "block";
+  }
+}
 
-  // 5 seconds loading like real bank system
-  setTimeout(() => {
+/* GENERATE 70 REALISTIC TRANSACTIONS */
+const txns = document.getElementById("txns");
 
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("success").style.display = "flex";
+let types = ["Salary Deposit","Apple Store","Transfer","Investment Return","Netflix","Uber","Amazon","Bank Fee","Crypto Buy","Utility Bill"];
 
-    // auto hide after few seconds (optional)
-    setTimeout(() => {
-      document.getElementById("success").style.display = "none";
-    }, 4000);
+for (let i = 1; i <= 70; i++) {
 
-  }, 5000);
+  let type = types[Math.floor(Math.random() * types.length)];
+  let amount = Math.floor(Math.random() * 5000) + 50;
+  let isCredit = Math.random() > 0.6;
+
+  let date = new Date();
+  date.setDate(date.getDate() - i * 5);
+
+  let time = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+
+  txns.innerHTML += `
+    <div class="txn">
+      <span>${time} - ${type}</span>
+      <span class="${isCredit ? 'credit' : 'debit'}">
+        ${isCredit ? '+' : '-'}$${amount}
+      </span>
+    </div>
+  `;
 }
 
 </script>
