@@ -17,40 +17,54 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #0b1f3a;
+      background: radial-gradient(circle at top, #1e3a8a, #0b1220 70%);
       color: white;
+      overflow: hidden;
     }
 
-    .card {
+    /* subtle floating glow */
+    .glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(59, 130, 246, 0.3);
+      filter: blur(100px);
+      top: -50px;
+      left: -50px;
+    }
+
+    .container {
       text-align: center;
+      max-width: 420px;
       padding: 40px 25px;
-      max-width: 400px;
-      width: 90%;
+      z-index: 1;
     }
 
     .logo {
-      width: 70px;
-      height: 70px;
-      background: white;
-      color: #0b1f3a;
-      border-radius: 15px;
+      width: 72px;
+      height: 72px;
+      margin: auto;
+      margin-bottom: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.1);
       display: flex;
       justify-content: center;
       align-items: center;
       font-weight: bold;
       font-size: 20px;
-      margin: auto;
-      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 28px;
       margin-bottom: 10px;
+      letter-spacing: 0.5px;
     }
 
     p {
       font-size: 14px;
-      opacity: 0.7;
+      opacity: 0.75;
+      line-height: 1.5;
       margin-bottom: 30px;
     }
 
@@ -60,20 +74,20 @@
       border: none;
       border-radius: 10px;
       background: #ffffff;
-      color: #0b1f3a;
+      color: #0b1220;
       font-size: 15px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.2s ease;
     }
 
     .btn:hover {
-      transform: scale(1.02);
+      transform: translateY(-2px);
       background: #e5e7eb;
     }
 
     .footer {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 11px;
       opacity: 0.5;
     }
@@ -82,18 +96,23 @@
 
 <body>
 
-  <div class="card">
+  <div class="glow"></div>
+
+  <div class="container">
 
     <div class="logo">NT</div>
 
-    <h1>Novatrust Banking</h1>
+    <h1>Secure Banking Experience</h1>
 
-    <p>Secure digital banking platform built for modern finance</p>
+    <p>
+      Access your Novatrust Private Banking account with
+      enterprise-grade security and modern financial tools.
+    </p>
 
-    <button class="btn">Continue</button>
+    <button class="btn">Sign in to continue</button>
 
     <div class="footer">
-      Protected by advanced security systems
+      © Novatrust Financial Services
     </div>
 
   </div>
