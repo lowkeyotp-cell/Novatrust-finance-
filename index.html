@@ -17,24 +17,40 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #0b1f3a, #1e3a8a);
+      background: #0b1f3a;
       color: white;
-      text-align: center;
-      padding: 20px;
     }
 
-    .container {
+    .card {
+      text-align: center;
+      padding: 40px 25px;
       max-width: 400px;
+      width: 90%;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: white;
+      color: #0b1f3a;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin: auto;
+      margin-bottom: 20px;
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
     p {
       font-size: 14px;
-      opacity: 0.8;
+      opacity: 0.7;
       margin-bottom: 30px;
     }
 
@@ -43,122 +59,41 @@
       padding: 14px;
       border: none;
       border-radius: 10px;
-      background: white;
+      background: #ffffff;
       color: #0b1f3a;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     .btn:hover {
+      transform: scale(1.02);
       background: #e5e7eb;
     }
-  </style>
-</head>
 
-<body>
-
-  <div class="container">
-    <h1>Welcome to Novatrust</h1>
-    <p>Your secure digital banking experience starts here</p>
-
-    <button class="btn">Login</button>
-  </div>
-
-</body>
-</html>    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    .footer {
       margin-top: 20px;
-    }
-
-    .balance {
-      font-size: 28px;
-      margin-top: 10px;
-      color: #0b1f3a;
-    }
-
-    /* Buttons */
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #0b1f3a;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .btn:hover {
-      background: #123a6a;
-    }
-
-    /* Transactions */
-    .transaction {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-
-    .credit {
-      color: green;
-    }
-
-    .debit {
-      color: red;
+      font-size: 11px;
+      opacity: 0.5;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    Novatrust Private Banking
-  </div>
+  <div class="card">
 
-  <div class="container">
+    <div class="logo">NT</div>
 
-    <div class="card">
-      <h3>Available Balance</h3>
-      <div class="balance">$12,450.00</div>
+    <h1>Novatrust Banking</h1>
 
-      <div class="actions">
-        <button class="btn">Transfer</button>
-        <button class="btn">Pay Bills</button>
-        <button class="btn">Deposit</button>
-      </div>
-    </div>
+    <p>Secure digital banking platform built for modern finance</p>
 
-    <div class="card">
-      <h3>Recent Transactions</h3>
+    <button class="btn">Continue</button>
 
-      <div class="transaction">
-        <span>Amazon Purchase</span>
-        <span class="debit">- $120</span>
-      </div>
-
-      <div class="transaction">
-        <span>Salary</span>
-        <span class="credit">+ $3,000</span>
-      </div>
-
-      <div class="transaction">
-        <span>Transfer</span>
-        <span class="debit">- $500</span>
-      </div>
-
+    <div class="footer">
+      Protected by advanced security systems
     </div>
 
   </div>
