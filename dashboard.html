@@ -15,12 +15,6 @@
   body {
     background: #0b1220;
     color: white;
-    animation: fadeIn 0.5s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
   }
 
   .topbar {
@@ -35,18 +29,6 @@
     padding: 20px;
   }
 
-  .welcome {
-    font-size: 22px;
-    font-weight: bold;
-  }
-
-  .sub {
-    font-size: 13px;
-    opacity: 0.7;
-    margin-top: 5px;
-  }
-
-  /* CARD */
   .card {
     margin-top: 20px;
     background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -57,16 +39,14 @@
   .balance {
     font-size: 50px;
     font-weight: 900;
-    margin-top: 10px;
   }
 
   .accounts {
-    margin-top: 15px;
+    margin-top: 10px;
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 1.7;
   }
 
-  /* BUTTONS */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -92,43 +72,14 @@
     color: white;
   }
 
-  /* SUPPORT */
-  .support {
-    margin-top: 25px;
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 15px;
-  }
-
-  .chat-box {
-    margin-top: 10px;
-    padding: 12px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 10px;
-    min-height: 70px;
-    font-size: 14px;
-  }
-
-  .qbtn {
-    margin-top: 8px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  /* SEND MODAL */
+  /* MODAL */
   .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
+    top: 0; left: 0;
+    background: rgba(0,0,0,0.75);
     justify-content: center;
     align-items: center;
   }
@@ -136,8 +87,12 @@
   .box {
     background: #111a2e;
     padding: 20px;
-    border-radius: 12px;
-    width: 300px;
+    border-radius: 14px;
+    width: 320px;
+  }
+
+  .box h3 {
+    margin-bottom: 10px;
   }
 
   .box input {
@@ -146,17 +101,63 @@
     margin-top: 10px;
     border-radius: 8px;
     border: none;
+    outline: none;
   }
 
   .sendbtn {
     margin-top: 12px;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background: #4ade80;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  /* LOADING SCREEN */
+  .loading {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0b1220;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid white;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+
+  .success {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0b1220;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #4ade80;
+    font-weight: bold;
+  }
+
+  .check {
+    font-size: 60px;
+    margin-bottom: 10px;
   }
 </style>
 </head>
@@ -170,12 +171,7 @@
 
 <div class="container">
 
-  <div class="welcome">Welcome back 👋</div>
-  <div class="sub">Your financial overview is ready</div>
-
-  <!-- BALANCE -->
   <div class="card">
-
     <div class="balance">$700,000</div>
 
     <div class="accounts">
@@ -190,30 +186,6 @@
       <button class="btn dark">Invest</button>
       <button class="btn dark">History</button>
     </div>
-
-  </div>
-
-  <!-- AI SUPPORT -->
-  <div class="support">
-
-    <h3>Customer Support AI</h3>
-
-    <div id="chat" class="chat-box">
-      Select a question below
-    </div>
-
-    <button class="qbtn" onclick="reply('withdraw')">
-      How do I withdraw money?
-    </button>
-
-    <button class="qbtn" onclick="reply('transfer')">
-      How do I transfer funds?
-    </button>
-
-    <button class="qbtn" onclick="reply('account')">
-      Why is my account restricted?
-    </button>
-
   </div>
 
 </div>
@@ -221,27 +193,55 @@
 <!-- SEND MODAL -->
 <div id="modal" class="modal">
   <div class="box">
-    <h3>Send Money</h3>
-    <input placeholder="Recipient Name">
-    <input placeholder="Amount">
-    <button class="sendbtn" onclick="send()">Confirm Transfer</button>
+    <h3>New Transfer</h3>
+
+    <input placeholder="Recipient Full Name">
+    <input placeholder="Account Number">
+    <input placeholder="Bank Name">
+    <input placeholder="Amount ($)">
+
+    <button class="sendbtn" onclick="processTransfer()">
+      Confirm Transfer
+    </button>
   </div>
 </div>
 
-<script>
+<!-- LOADING -->
+<div id="loading" class="loading">
+  <div class="spinner"></div>
+  <p style="margin-top:15px;">Processing secure transfer...</p>
+</div>
 
-function reply(type) {
-  document.getElementById("chat").innerText =
-    "Please contact the account owner or assigned officer for assistance regarding this request.";
-}
+<!-- SUCCESS -->
+<div id="success" class="success">
+  <div class="check">✔</div>
+  <h2>Transfer Pending Approval</h2>
+  <p>Please contact account owner for approval</p>
+</div>
+
+<script>
 
 function openSend() {
   document.getElementById("modal").style.display = "flex";
 }
 
-function send() {
-  alert("Transfer request submitted. Please contact account owner for approval.");
+function processTransfer() {
+
   document.getElementById("modal").style.display = "none";
+  document.getElementById("loading").style.display = "flex";
+
+  // 5 seconds loading like real bank system
+  setTimeout(() => {
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("success").style.display = "flex";
+
+    // auto hide after few seconds (optional)
+    setTimeout(() => {
+      document.getElementById("success").style.display = "none";
+    }, 4000);
+
+  }, 5000);
 }
 
 </script>
