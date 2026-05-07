@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novatrust Banking</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    background: #0b1220;
+    color: white;
+    height: 100vh;
+  }
+
+  .top {
+    padding: 18px;
+    font-weight: bold;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .screen {
+    padding: 20px;
+    padding-bottom: 80px;
+  }
+
+  .card {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 15px;
+  }
+
+  .balance {
+    font-size: 30px;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .btn {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .light {
+    background: white;
+    color: #0b1220;
+  }
+
+  .dark {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+
+  .section {
+    display: none;
+  }
+
+  .active {
+    display: block;
+  }
+
+  /* bottom nav like Chase */
+  .nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(20,20,30,0.95);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="top">Novatrust Banking</div>
+
+<div class="screen">
+
+  <!-- HOME -->
+  <div id="home" class="section active">
+    <h3>Welcome back 👋</h3>
+
+    <div class="card">
+      <div>Available Balance</div>
+      <div class="balance">$12,450.00</div>
+
+      <div class="btn-grid">
+        <button class="btn light">Send</button>
+        <button class="btn light">Receive</button>
+        <button class="btn dark">Pay Bills</button>
+        <button class="btn dark">Invest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCOUNTS -->
+  <div id="accounts" class="section">
+    <h3>Accounts</h3>
+    <p>Main Account: $12,450.00</p>
+    <p>Savings: $5,200.00</p>
+  </div>
+
+  <!-- CARDS -->
+  <div id="cards" class="section">
+    <h3>Cards</h3>
+    <p>Visa Debit •••• 1234</p>
+    <button class="btn dark">Freeze Card</button>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="section">
+    <h3>Profile</h3>
+    <p>User: baemax12</p>
+    <button class="btn dark" onclick="logout()">Logout</button>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+  <button onclick="show('home')">Home</button>
+  <button onclick="show('accounts')">Accounts</button>
+  <button onclick="show('cards')">Cards</button>
+  <button onclick="show('profile')">Profile</button>
+</div>
+
+<script>
+function show(page) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+function logout() {
+  sessionStorage.removeItem("loggedIn");
+  window.location.href = "./login.html";
+}
+</script>
+
+</body>
+</html>
