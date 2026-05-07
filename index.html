@@ -17,48 +17,76 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at top, #1e3a8a, #0b1220 70%);
       color: white;
       overflow: hidden;
+      background: linear-gradient(-45deg, #0b1220, #1e3a8a, #0f172a, #2563eb);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite;
     }
 
-    /* subtle floating glow */
-    .glow {
+    @keyframes bgMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* floating glow blobs */
+    .blob {
       position: absolute;
       width: 300px;
       height: 300px;
-      background: rgba(59, 130, 246, 0.3);
-      filter: blur(100px);
-      top: -50px;
-      left: -50px;
+      background: rgba(59,130,246,0.25);
+      filter: blur(120px);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .blob2 {
+      top: 60%;
+      left: 60%;
+      background: rgba(99,102,241,0.25);
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%,100% {transform: translateY(0px);}
+      50% {transform: translateY(-40px);}
     }
 
     .container {
       text-align: center;
       max-width: 420px;
       padding: 40px 25px;
-      z-index: 1;
+      z-index: 2;
     }
 
+    /* animated logo */
     .logo {
-      width: 72px;
-      height: 72px;
+      width: 85px;
+      height: 85px;
       margin: auto;
       margin-bottom: 20px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
       display: flex;
       justify-content: center;
       align-items: center;
       font-weight: bold;
       font-size: 20px;
-      border: 1px solid rgba(255,255,255,0.2);
+      letter-spacing: 2px;
+      animation: pulse 2.5s infinite;
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes pulse {
+      0% {transform: scale(1);}
+      50% {transform: scale(1.08);}
+      100% {transform: scale(1);}
     }
 
     h1 {
       font-size: 28px;
       margin-bottom: 10px;
-      letter-spacing: 0.5px;
     }
 
     p {
@@ -72,8 +100,8 @@
       width: 100%;
       padding: 14px;
       border: none;
-      border-radius: 10px;
-      background: #ffffff;
+      border-radius: 12px;
+      background: white;
       color: #0b1220;
       font-size: 15px;
       font-weight: bold;
@@ -82,7 +110,7 @@
     }
 
     .btn:hover {
-      transform: translateY(-2px);
+      transform: scale(1.03);
       background: #e5e7eb;
     }
 
@@ -96,7 +124,8 @@
 
 <body>
 
-  <div class="glow"></div>
+  <div class="blob"></div>
+  <div class="blob blob2"></div>
 
   <div class="container">
 
