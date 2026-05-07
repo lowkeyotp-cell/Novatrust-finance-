@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Novatrust Banking</title>
+<title>Novatrust Dashboard</title>
 
 <style>
   * {
@@ -15,37 +15,65 @@
   body {
     background: #0b1220;
     color: white;
-    height: 100vh;
   }
 
-  .top {
+  .topbar {
     padding: 18px;
-    font-weight: bold;
     background: rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    letter-spacing: 1px;
   }
 
-  .screen {
+  .container {
     padding: 20px;
-    padding-bottom: 80px;
   }
 
+  .welcome {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .sub {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 5px;
+  }
+
+  /* 💰 BALANCE CARD */
   .card {
+    margin-top: 20px;
     background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 15px;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  .label {
+    font-size: 13px;
+    opacity: 0.85;
+    letter-spacing: 1px;
   }
 
   .balance {
-    font-size: 30px;
+    font-size: 48px;
+    font-weight: 900;
     margin-top: 10px;
-    font-weight: bold;
+    letter-spacing: 1px;
   }
 
-  .btn-grid {
+  .currency {
+    font-size: 18px;
+    opacity: 0.9;
+  }
+
+  /* quick actions */
+  .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
     margin-top: 15px;
   }
 
@@ -67,101 +95,74 @@
     color: white;
   }
 
+  /* transactions */
   .section {
-    display: none;
+    margin-top: 25px;
   }
 
-  .active {
-    display: block;
-  }
-
-  /* bottom nav like Chase */
-  .nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: rgba(20,20,30,0.95);
+  .txn {
     display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
   }
 
-  .nav button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-  }
+  .credit { color: #4ade80; }
+  .debit { color: #f87171; }
 </style>
 </head>
 
 <body>
 
-<div class="top">Novatrust Banking</div>
+<div class="topbar">
+  <div>Novatrust Private Banking</div>
+  <div>Secure</div>
+</div>
 
-<div class="screen">
+<div class="container">
 
-  <!-- HOME -->
-  <div id="home" class="section active">
-    <h3>Welcome back 👋</h3>
+  <div class="welcome">Welcome back 👋</div>
+  <div class="sub">Your wealth overview is ready</div>
 
-    <div class="card">
-      <div>Available Balance</div>
-      <div class="balance">$12,450.00</div>
+  <!-- 💰 BALANCE -->
+  <div class="card">
+    <div class="label">TOTAL BALANCE</div>
 
-      <div class="btn-grid">
-        <button class="btn light">Send</button>
-        <button class="btn light">Receive</button>
-        <button class="btn dark">Pay Bills</button>
-        <button class="btn dark">Invest</button>
-      </div>
+    <div class="balance">
+      <span class="currency">$</span>700,000
+    </div>
+
+    <div class="grid">
+      <button class="btn light">Send</button>
+      <button class="btn light">Receive</button>
+      <button class="btn dark">Invest</button>
+      <button class="btn dark">History</button>
     </div>
   </div>
 
-  <!-- ACCOUNTS -->
-  <div id="accounts" class="section">
-    <h3>Accounts</h3>
-    <p>Main Account: $12,450.00</p>
-    <p>Savings: $5,200.00</p>
-  </div>
+  <!-- transactions -->
+  <div class="section">
+    <h3>Recent Activity</h3>
 
-  <!-- CARDS -->
-  <div id="cards" class="section">
-    <h3>Cards</h3>
-    <p>Visa Debit •••• 1234</p>
-    <button class="btn dark">Freeze Card</button>
-  </div>
+    <div class="txn">
+      <span>Apple Store</span>
+      <span class="debit">- $1,200</span>
+    </div>
 
-  <!-- PROFILE -->
-  <div id="profile" class="section">
-    <h3>Profile</h3>
-    <p>User: baemax12</p>
-    <button class="btn dark" onclick="logout()">Logout</button>
+    <div class="txn">
+      <span>Salary Deposit</span>
+      <span class="credit">+ $25,000</span>
+    </div>
+
+    <div class="txn">
+      <span>Investment Return</span>
+      <span class="credit">+ $18,500</span>
+    </div>
+
   </div>
 
 </div>
-
-<!-- BOTTOM NAV -->
-<div class="nav">
-  <button onclick="show('home')">Home</button>
-  <button onclick="show('accounts')">Accounts</button>
-  <button onclick="show('cards')">Cards</button>
-  <button onclick="show('profile')">Profile</button>
-</div>
-
-<script>
-function show(page) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
-}
-
-function logout() {
-  sessionStorage.removeItem("loggedIn");
-  window.location.href = "./login.html";
-}
-</script>
 
 </body>
 </html>
