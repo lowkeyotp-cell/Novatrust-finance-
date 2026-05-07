@@ -65,7 +65,6 @@
   .light { background: white; color: #0b1220; }
   .dark { background: rgba(255,255,255,0.1); color: white; }
 
-  /* SUPPORT */
   .support {
     margin-top: 25px;
     background: rgba(255,255,255,0.05);
@@ -93,7 +92,6 @@
     text-align: left;
   }
 
-  /* HISTORY */
   .history {
     display: none;
     margin-top: 20px;
@@ -115,7 +113,6 @@
   .credit { color: #4ade80; }
   .debit { color: #f87171; }
 
-  /* MODAL */
   .modal {
     display: none;
     position: fixed;
@@ -159,7 +156,21 @@
 
 <div class="topbar">
   <div>Novatrust Private Banking</div>
-  <div>Secure</div>
+
+  <div style="display:flex; gap:10px; align-items:center;">
+    <div>Secure</div>
+
+    <button onclick="logout()" style="
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    ">
+      Log out
+    </button>
+  </div>
 </div>
 
 <div class="container">
@@ -184,7 +195,7 @@
 
   </div>
 
-  <!-- AI SUPPORT -->
+  <!-- SUPPORT -->
   <div class="support">
 
     <h3>Customer Support AI</h3>
@@ -206,7 +217,7 @@
 
 </div>
 
-<!-- SEND MODAL -->
+<!-- MODAL -->
 <div id="sendModal" class="modal">
   <div class="box">
     <h3>Secure Transfer Request</h3>
@@ -226,6 +237,17 @@ let txns = document.getElementById("txns");
 let all = [];
 let loaded = 0;
 
+/* SECURITY CHECK */
+if (!sessionStorage.getItem("auth")) {
+  window.location.href = "index.html";
+}
+
+/* LOGOUT */
+function logout() {
+  sessionStorage.removeItem("auth");
+  window.location.href = "index.html";
+}
+
 /* AI */
 function ask(type) {
 
@@ -241,12 +263,12 @@ function ask(type) {
   chat.innerText = responses[type];
 }
 
-/* OPEN MODAL */
+/* OPEN SEND */
 function openSend() {
   document.getElementById("sendModal").style.display = "flex";
 }
 
-/* 🔥 FIXED PROFESSIONAL SEND SYSTEM */
+/* SEND */
 function sendMoney() {
 
   let amt = document.getElementById("amount").value;
@@ -258,7 +280,6 @@ function sendMoney() {
 
   document.getElementById("sendModal").style.display = "none";
 
-  // CREATE POPUP
   let popup = document.createElement("div");
   popup.style.position = "fixed";
   popup.style.top = "0";
@@ -317,7 +338,7 @@ function sendMoney() {
         color:#4ade80;
       ">
         <h3>✔ Success</h3>
-        <p style="margin-top:10px; color:white;">
+        <p style="color:white;">
           Transfer request submitted.<br>
           Please contact account owner for approval.
         </p>
@@ -327,20 +348,16 @@ function sendMoney() {
     document.getElementById("chat").innerText =
       "Transfer request submitted. Please contact account owner for approval.";
 
-    setTimeout(() => {
-      popup.remove();
-    }, 3000);
+    setTimeout(() => popup.remove(), 3000);
 
   }, 2000);
 }
 
 /* HISTORY */
 function generate() {
-
   let types = ["Salary","Apple","Amazon","Transfer","Investment","Netflix","Uber","Fee"];
 
   for (let i = 1; i <= 70; i++) {
-
     let type = types[Math.floor(Math.random() * types.length)];
     let amount = Math.floor(Math.random() * 4000) + 100;
     let credit = Math.random() > 0.5;
@@ -358,9 +375,7 @@ function generate() {
 }
 
 function loadMore() {
-
   for (let i = loaded; i < loaded + 10 && i < all.length; i++) {
-
     txns.innerHTML += `
       <div class="txn">
         <span>${all[i].time} - ${all[i].type}</span>
@@ -370,7 +385,6 @@ function loadMore() {
       </div>
     `;
   }
-
   loaded += 10;
 }
 
