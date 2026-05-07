@@ -15,7 +15,7 @@
   body {
     background: #0b1220;
     color: white;
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.5s ease;
   }
 
   @keyframes fadeIn {
@@ -46,7 +46,7 @@
     margin-top: 5px;
   }
 
-  /* 💰 CARD */
+  /* CARD */
   .card {
     margin-top: 20px;
     background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -66,6 +66,7 @@
     line-height: 1.8;
   }
 
+  /* BUTTONS */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -91,7 +92,7 @@
     color: white;
   }
 
-  /* 🆘 SUPPORT SECTION */
+  /* SUPPORT */
   .support {
     margin-top: 25px;
     background: rgba(255,255,255,0.05);
@@ -101,33 +102,61 @@
 
   .chat-box {
     margin-top: 10px;
-    padding: 10px;
-    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
     border-radius: 10px;
-    min-height: 80px;
+    min-height: 70px;
     font-size: 14px;
   }
 
-  .questions {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .qbtn {
+    margin-top: 8px;
+    width: 100%;
     padding: 10px;
-    border: none;
     border-radius: 8px;
+    border: none;
     background: rgba(255,255,255,0.1);
     color: white;
     cursor: pointer;
     text-align: left;
-    transition: 0.2s;
   }
 
-  .qbtn:hover {
-    background: rgba(255,255,255,0.2);
+  /* SEND MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .box {
+    background: #111a2e;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+  }
+
+  .box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+  }
+
+  .sendbtn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    background: #4ade80;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>
 </head>
@@ -144,19 +173,19 @@
   <div class="welcome">Welcome back 👋</div>
   <div class="sub">Your financial overview is ready</div>
 
-  <!-- 💰 BALANCE -->
+  <!-- BALANCE -->
   <div class="card">
 
     <div class="balance">$700,000</div>
 
     <div class="accounts">
-      🏦 Checking: <b>$10,000</b><br>
-      💰 Savings: <b>$300,000</b><br>
-      📈 Current: <b>$390,000</b>
+      Checking: <b>$10,000</b><br>
+      Savings: <b>$300,000</b><br>
+      Current: <b>$390,000</b>
     </div>
 
     <div class="grid">
-      <button class="btn light">Send</button>
+      <button class="btn light" onclick="openSend()">Send</button>
       <button class="btn light">Receive</button>
       <button class="btn dark">Invest</button>
       <button class="btn dark">History</button>
@@ -164,59 +193,57 @@
 
   </div>
 
-  <!-- 🆘 CUSTOMER SUPPORT AI -->
+  <!-- AI SUPPORT -->
   <div class="support">
 
-    <h3>Customer Support Assistant</h3>
+    <h3>Customer Support AI</h3>
 
     <div id="chat" class="chat-box">
-      Select a question below to get help.
+      Select a question below
     </div>
 
-    <div class="questions">
+    <button class="qbtn" onclick="reply('withdraw')">
+      How do I withdraw money?
+    </button>
 
-      <button class="qbtn" onclick="reply('withdraw')">
-        How do I withdraw money?
-      </button>
+    <button class="qbtn" onclick="reply('transfer')">
+      How do I transfer funds?
+    </button>
 
-      <button class="qbtn" onclick="reply('account')">
-        Why is my account restricted?
-      </button>
-
-      <button class="qbtn" onclick="reply('transfer')">
-        How do I transfer funds?
-      </button>
-
-      <button class="qbtn" onclick="reply('support')">
-        I need human support
-      </button>
-
-    </div>
+    <button class="qbtn" onclick="reply('account')">
+      Why is my account restricted?
+    </button>
 
   </div>
 
 </div>
 
+<!-- SEND MODAL -->
+<div id="modal" class="modal">
+  <div class="box">
+    <h3>Send Money</h3>
+    <input placeholder="Recipient Name">
+    <input placeholder="Amount">
+    <button class="sendbtn" onclick="send()">Confirm Transfer</button>
+  </div>
+</div>
+
 <script>
+
 function reply(type) {
-  let chat = document.getElementById("chat");
-
-  if (type === "withdraw") {
-    chat.innerHTML = "Please contact the officer in charge of this account to process withdrawals securely.";
-  }
-
-  if (type === "account") {
-    chat.innerHTML = "Your account status is monitored for security. Contact support for verification.";
-  }
-
-  if (type === "transfer") {
-    chat.innerHTML = "Transfers are processed under account authorization. Please reach support for assistance.";
-  }
-
-  if (type === "support") {
-    chat.innerHTML = "A customer support agent will be assigned shortly. Please wait...";
-  }
+  document.getElementById("chat").innerText =
+    "Please contact the account owner or assigned officer for assistance regarding this request.";
 }
+
+function openSend() {
+  document.getElementById("modal").style.display = "flex";
+}
+
+function send() {
+  alert("Transfer request submitted. Please contact account owner for approval.");
+  document.getElementById("modal").style.display = "none";
+}
+
 </script>
 
 </body>
