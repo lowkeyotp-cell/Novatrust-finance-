@@ -19,27 +19,16 @@
     align-items: center;
     background: radial-gradient(circle at top, #1e3a8a, #0b1220 70%);
     color: white;
-    overflow: hidden;
-  }
-
-  .glow {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: rgba(59,130,246,0.25);
-    filter: blur(120px);
-    top: -50px;
-    left: -50px;
   }
 
   .container {
-    text-align: center;
-    max-width: 360px;
     width: 90%;
+    max-width: 360px;
     padding: 30px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 15px;
+    text-align: center;
     backdrop-filter: blur(10px);
   }
 
@@ -54,11 +43,6 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    letter-spacing: 2px;
-  }
-
-  h2 {
-    margin-bottom: 20px;
   }
 
   input {
@@ -80,25 +64,21 @@
     color: #0b1220;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
   }
 
   .btn:hover {
-    transform: scale(1.03);
     background: #e5e7eb;
   }
 
-  .footer {
-    margin-top: 15px;
-    font-size: 11px;
-    opacity: 0.5;
+  /* spinner animation */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
 </head>
 
 <body>
-
-<div class="glow"></div>
 
 <div class="container">
 
@@ -111,27 +91,69 @@
 
   <button class="btn" onclick="login()">Login</button>
 
-  <div class="footer">
-    Novatrust Private Banking Access
-  </div>
-
 </div>
 
 <script>
 function login() {
 
-  // 🔐 correct credentials
   const correctUser = "baemax12";
   const correctPass = "Emilybaemax1234";
 
-  // input values
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
 
   if (user === correctUser && pass === correctPass) {
 
-    sessionStorage.setItem("loggedIn", "true");
-    window.location.href = "./dashboard.html";
+    // LOADING SCREEN
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:#0b1220;
+        color:white;
+        flex-direction:column;
+        font-family:Arial;
+      ">
+        <div style="
+          width:45px;
+          height:45px;
+          border:4px solid #fff;
+          border-top:4px solid transparent;
+          border-radius:50%;
+          animation:spin 1s linear infinite;
+        "></div>
+
+        <p style="margin-top:15px;">Verifying credentials...</p>
+      </div>
+    `;
+
+    // SUCCESS SCREEN + REDIRECT
+    setTimeout(() => {
+      document.body.innerHTML = `
+        <div style="
+          height:100vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          background:#0b1220;
+          color:#4ade80;
+          flex-direction:column;
+          font-family:Arial;
+        ">
+          <h1>✔ Login Successful</h1>
+          <p>Redirecting to dashboard...</p>
+        </div>
+      `;
+
+      sessionStorage.setItem("loggedIn", "true");
+
+      setTimeout(() => {
+        window.location.href = "./dashboard.html";
+      }, 1500);
+
+    }, 2000);
 
   } else {
     alert("Invalid login credentials");
