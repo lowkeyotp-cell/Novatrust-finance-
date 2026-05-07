@@ -29,6 +29,7 @@
     display: flex;
     justify-content: space-between;
     font-weight: bold;
+    letter-spacing: 1px;
   }
 
   .container {
@@ -63,13 +64,21 @@
   .label {
     font-size: 12px;
     letter-spacing: 1px;
-    opacity: 0.8;
+    opacity: 0.85;
   }
 
   .balance {
     font-size: 50px;
     font-weight: 900;
     margin-top: 10px;
+  }
+
+  /* ACCOUNT BREAKDOWN */
+  .accounts {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.8;
+    opacity: 0.95;
   }
 
   /* buttons */
@@ -103,7 +112,7 @@
     color: white;
   }
 
-  /* 📊 WEALTH BREAKDOWN */
+  /* breakdown */
   .breakdown {
     margin-top: 20px;
     background: rgba(255,255,255,0.05);
@@ -119,23 +128,9 @@
     overflow: hidden;
   }
 
-  .fill1 {
-    width: 60%;
-    height: 100%;
-    background: #4ade80;
-  }
-
-  .fill2 {
-    width: 25%;
-    height: 100%;
-    background: #60a5fa;
-  }
-
-  .fill3 {
-    width: 15%;
-    height: 100%;
-    background: #fbbf24;
-  }
+  .fill1 { width: 60%; height: 100%; background: #4ade80; }
+  .fill2 { width: 25%; height: 100%; background: #60a5fa; }
+  .fill3 { width: 15%; height: 100%; background: #fbbf24; }
 
   .section {
     margin-top: 25px;
@@ -166,20 +161,30 @@
   <div class="welcome">Welcome back 👋</div>
   <div class="sub">Your financial overview is ready</div>
 
-  <!-- 💰 BALANCE -->
+  <!-- 💰 BALANCE CARD -->
   <div class="card">
+
     <div class="label">TOTAL BALANCE</div>
     <div class="balance">$700,000</div>
 
+    <!-- ACCOUNT BREAKDOWN -->
+    <div class="accounts">
+      🏦 Checking Account: <b>$10,000</b><br>
+      💰 Savings Account: <b>$300,000</b><br>
+      📈 Current Account: <b>$390,000</b>
+    </div>
+
+    <!-- ACTION BUTTONS -->
     <div class="grid">
       <button class="btn light">Send</button>
       <button class="btn light">Receive</button>
       <button class="btn dark">Invest</button>
       <button class="btn dark">History</button>
     </div>
+
   </div>
 
-  <!-- 📊 BREAKDOWN -->
+  <!-- 📊 WEALTH BREAKDOWN -->
   <div class="breakdown">
     <h4>Wealth Breakdown</h4>
 
@@ -193,7 +198,7 @@
     <div class="bar"><div class="fill3"></div></div>
   </div>
 
-  <!-- transactions -->
+  <!-- TRANSACTIONS (kept) -->
   <div class="section">
     <h3>Recent Activity</h3>
 
@@ -203,7 +208,7 @@
     </div>
 
     <div class="txn">
-      <span>Salary</span>
+      <span>Salary Deposit</span>
       <span class="credit">+ $25,000</span>
     </div>
 
