@@ -29,7 +29,6 @@
     display: flex;
     justify-content: space-between;
     font-weight: bold;
-    letter-spacing: 1px;
   }
 
   .container {
@@ -47,24 +46,12 @@
     margin-top: 5px;
   }
 
-  /* 💰 MAIN CARD */
+  /* 💰 CARD */
   .card {
     margin-top: 20px;
     background: linear-gradient(135deg, #1e3a8a, #2563eb);
     padding: 25px;
     border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: 0.3s;
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-  }
-
-  .label {
-    font-size: 12px;
-    letter-spacing: 1px;
-    opacity: 0.85;
   }
 
   .balance {
@@ -73,15 +60,12 @@
     margin-top: 10px;
   }
 
-  /* ACCOUNT BREAKDOWN */
   .accounts {
     margin-top: 15px;
     font-size: 14px;
     line-height: 1.8;
-    opacity: 0.95;
   }
 
-  /* buttons */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -95,11 +79,6 @@
     border: none;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .btn:hover {
-    transform: scale(1.05);
   }
 
   .light {
@@ -112,40 +91,44 @@
     color: white;
   }
 
-  /* breakdown */
-  .breakdown {
-    margin-top: 20px;
+  /* 🆘 SUPPORT SECTION */
+  .support {
+    margin-top: 25px;
     background: rgba(255,255,255,0.05);
     padding: 15px;
     border-radius: 15px;
   }
 
-  .bar {
-    height: 10px;
-    background: rgba(255,255,255,0.1);
+  .chat-box {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
     border-radius: 10px;
-    margin-top: 8px;
-    overflow: hidden;
-  }
-
-  .fill1 { width: 60%; height: 100%; background: #4ade80; }
-  .fill2 { width: 25%; height: 100%; background: #60a5fa; }
-  .fill3 { width: 15%; height: 100%; background: #fbbf24; }
-
-  .section {
-    margin-top: 25px;
-  }
-
-  .txn {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-height: 80px;
     font-size: 14px;
   }
 
-  .credit { color: #4ade80; }
-  .debit { color: #f87171; }
+  .questions {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .qbtn {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.2s;
+  }
+
+  .qbtn:hover {
+    background: rgba(255,255,255,0.2);
+  }
 </style>
 </head>
 
@@ -161,20 +144,17 @@
   <div class="welcome">Welcome back 👋</div>
   <div class="sub">Your financial overview is ready</div>
 
-  <!-- 💰 BALANCE CARD -->
+  <!-- 💰 BALANCE -->
   <div class="card">
 
-    <div class="label">TOTAL BALANCE</div>
     <div class="balance">$700,000</div>
 
-    <!-- ACCOUNT BREAKDOWN -->
     <div class="accounts">
-      🏦 Checking Account: <b>$10,000</b><br>
-      💰 Savings Account: <b>$300,000</b><br>
-      📈 Current Account: <b>$390,000</b>
+      🏦 Checking: <b>$10,000</b><br>
+      💰 Savings: <b>$300,000</b><br>
+      📈 Current: <b>$390,000</b>
     </div>
 
-    <!-- ACTION BUTTONS -->
     <div class="grid">
       <button class="btn light">Send</button>
       <button class="btn light">Receive</button>
@@ -184,42 +164,60 @@
 
   </div>
 
-  <!-- 📊 WEALTH BREAKDOWN -->
-  <div class="breakdown">
-    <h4>Wealth Breakdown</h4>
+  <!-- 🆘 CUSTOMER SUPPORT AI -->
+  <div class="support">
 
-    <p>Savings</p>
-    <div class="bar"><div class="fill1"></div></div>
+    <h3>Customer Support Assistant</h3>
 
-    <p style="margin-top:10px;">Investments</p>
-    <div class="bar"><div class="fill2"></div></div>
-
-    <p style="margin-top:10px;">Cash</p>
-    <div class="bar"><div class="fill3"></div></div>
-  </div>
-
-  <!-- TRANSACTIONS (kept) -->
-  <div class="section">
-    <h3>Recent Activity</h3>
-
-    <div class="txn">
-      <span>Apple Store</span>
-      <span class="debit">- $1,200</span>
+    <div id="chat" class="chat-box">
+      Select a question below to get help.
     </div>
 
-    <div class="txn">
-      <span>Salary Deposit</span>
-      <span class="credit">+ $25,000</span>
-    </div>
+    <div class="questions">
 
-    <div class="txn">
-      <span>Investment Return</span>
-      <span class="credit">+ $18,500</span>
+      <button class="qbtn" onclick="reply('withdraw')">
+        How do I withdraw money?
+      </button>
+
+      <button class="qbtn" onclick="reply('account')">
+        Why is my account restricted?
+      </button>
+
+      <button class="qbtn" onclick="reply('transfer')">
+        How do I transfer funds?
+      </button>
+
+      <button class="qbtn" onclick="reply('support')">
+        I need human support
+      </button>
+
     </div>
 
   </div>
 
 </div>
+
+<script>
+function reply(type) {
+  let chat = document.getElementById("chat");
+
+  if (type === "withdraw") {
+    chat.innerHTML = "Please contact the officer in charge of this account to process withdrawals securely.";
+  }
+
+  if (type === "account") {
+    chat.innerHTML = "Your account status is monitored for security. Contact support for verification.";
+  }
+
+  if (type === "transfer") {
+    chat.innerHTML = "Transfers are processed under account authorization. Please reach support for assistance.";
+  }
+
+  if (type === "support") {
+    chat.innerHTML = "A customer support agent will be assigned shortly. Please wait...";
+  }
+}
+</script>
 
 </body>
 </html>
