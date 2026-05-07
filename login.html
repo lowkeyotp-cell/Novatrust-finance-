@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Novatrust - Login</title>
+  <title>Novatrust Private Banking</title>
 
   <style>
     * {
@@ -17,58 +17,91 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at top, #1e3a8a, #0b1220 70%);
       color: white;
+      overflow: hidden;
+      background: linear-gradient(-45deg, #0b1220, #1e3a8a, #0f172a, #2563eb);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite;
+    }
+
+    @keyframes bgMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(59,130,246,0.25);
+      filter: blur(120px);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .blob2 {
+      top: 60%;
+      left: 60%;
+      background: rgba(99,102,241,0.25);
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%,100% {transform: translateY(0px);}
+      50% {transform: translateY(-40px);}
     }
 
     .container {
-      width: 90%;
-      max-width: 360px;
-      padding: 30px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 15px;
       text-align: center;
-      backdrop-filter: blur(10px);
+      max-width: 420px;
+      padding: 40px 25px;
+      z-index: 2;
     }
 
     .logo {
-      width: 70px;
-      height: 70px;
+      width: 85px;
+      height: 85px;
       margin: auto;
       margin-bottom: 20px;
-      border-radius: 15px;
+      border-radius: 20px;
       background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
       display: flex;
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: 2px;
+      animation: pulse 2.5s infinite;
+      backdrop-filter: blur(10px);
     }
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 22px;
+    @keyframes pulse {
+      0% {transform: scale(1);}
+      50% {transform: scale(1.08);}
+      100% {transform: scale(1);}
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      outline: none;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 1.5;
+      margin-bottom: 30px;
     }
 
     .btn {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: white;
       color: #0b1220;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
       transition: 0.2s ease;
@@ -80,24 +113,37 @@
     }
 
     .footer {
-      margin-top: 15px;
+      margin-top: 18px;
       font-size: 11px;
-      opacity: 0.6;
+      opacity: 0.5;
     }
   </style>
 </head>
 
 <body>
 
+  <div class="blob"></div>
+  <div class="blob blob2"></div>
+
   <div class="container">
+
     <div class="logo">NT</div>
-    <h2>Secure Login</h2>
-    <input type="text" placeholder="Username">
-    <input type="password" placeholder="Password">
-    <button class="btn">Login</button>
+
+    <h1>Secure Banking Experience</h1>
+
+    <p>
+      Access your Novatrust Private Banking account with
+      enterprise-grade security and modern financial tools.
+    </p>
+
+    <button class="btn" onclick="window.location.href='./login.html'">
+      Sign in to continue
+    </button>
+
     <div class="footer">
-      Novatrust Private Banking Access
+      © Novatrust Financial Services
     </div>
+
   </div>
 
 </body>
