@@ -65,33 +65,6 @@
   .light { background: white; color: #0b1220; }
   .dark { background: rgba(255,255,255,0.1); color: white; }
 
-  .support {
-    margin-top: 25px;
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 15px;
-  }
-
-  .chat {
-    margin-top: 10px;
-    padding: 12px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 10px;
-    min-height: 60px;
-  }
-
-  .qbtn {
-    margin-top: 8px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-    text-align: left;
-  }
-
   .history {
     display: none;
     margin-top: 20px;
@@ -175,9 +148,7 @@
 
 <div class="container">
 
-  <!-- BALANCE -->
   <div class="card">
-
     <div class="balance">$700,000</div>
 
     <div class="accounts">
@@ -192,27 +163,6 @@
       <button class="btn dark">Invest</button>
       <button class="btn dark" onclick="toggleHistory()">History</button>
     </div>
-
-  </div>
-
-  <!-- SUPPORT -->
-  <div class="support">
-
-    <h3>Customer Support AI</h3>
-
-    <div id="chat" class="chat">Select a question below</div>
-
-    <button class="qbtn" onclick="ask('withdraw')">How do I withdraw money?</button>
-    <button class="qbtn" onclick="ask('transfer')">How do I transfer funds?</button>
-    <button class="qbtn" onclick="ask('restricted')">Why is my account restricted?</button>
-    <button class="qbtn" onclick="ask('time')">How long does transfer take?</button>
-
-  </div>
-
-  <!-- HISTORY -->
-  <div id="history" class="history">
-    <h3>Transaction History (Last 12 Months)</h3>
-    <div id="txns"></div>
   </div>
 
 </div>
@@ -233,42 +183,25 @@
 
 <script>
 
-let txns = document.getElementById("txns");
-let all = [];
+let txns = [];
 let loaded = 0;
 
-/* SECURITY CHECK */
-if (!sessionStorage.getItem("auth")) {
-  window.location.href = "index.html";
-}
+/* ✅ FIXED AUTH CHECK (NO AUTO LOGOUT BUG) */
+window.addEventListener("load", function () {
+  const auth = sessionStorage.getItem("auth");
 
-/* LOGOUT */
+  if (auth !== "true") {
+    window.location.href = "index.html";
+  }
+});
+
+/* LOGOUT (FIXED) */
 function logout() {
-  sessionStorage.removeItem("auth");
+  sessionStorage.clear();
   window.location.href = "index.html";
 }
 
-/* AI */
-function ask(type) {
-
-  let chat = document.getElementById("chat");
-
-  let responses = {
-    withdraw: "Withdrawals require approval from the account owner.",
-    transfer: "Transfers are processed under compliance verification.",
-    restricted: "Your account requires verification. Contact support officer.",
-    time: "Transfers take 1–3 business days depending on approval."
-  };
-
-  chat.innerText = responses[type];
-}
-
-/* OPEN SEND */
-function openSend() {
-  document.getElementById("sendModal").style.display = "flex";
-}
-
-/* SEND */
+/* SEND (SAFE) */
 function sendMoney() {
 
   let amt = document.getElementById("amount").value;
@@ -293,27 +226,10 @@ function sendMoney() {
   popup.style.zIndex = "9999";
 
   popup.innerHTML = `
-    <div style="
-      background:#111a2e;
-      padding:25px;
-      border-radius:14px;
-      text-align:center;
-      width:300px;
-      color:white;
-    ">
-      <div style="
-        width:40px;
-        height:40px;
-        border:4px solid #4ade80;
-        border-top:4px solid transparent;
-        border-radius:50%;
-        margin:auto;
-        animation:spin 1s linear infinite;
-      "></div>
+    <div style="background:#111a2e;padding:25px;border-radius:14px;text-align:center;width:300px;color:white;">
+      <div style="width:40px;height:40px;border:4px solid #4ade80;border-top:4px solid transparent;border-radius:50%;margin:auto;animation:spin 1s linear infinite;"></div>
 
-      <p style="margin-top:15px; font-weight:bold;">
-        Processing Transfer...
-      </p>
+      <p style="margin-top:15px;font-weight:bold;">Processing Transfer...</p>
 
       <style>
         @keyframes spin {
@@ -329,14 +245,7 @@ function sendMoney() {
   setTimeout(() => {
 
     popup.innerHTML = `
-      <div style="
-        background:#111a2e;
-        padding:25px;
-        border-radius:14px;
-        text-align:center;
-        width:300px;
-        color:#4ade80;
-      ">
+      <div style="background:#111a2e;padding:25px;border-radius:14px;text-align:center;width:300px;color:#4ade80;">
         <h3>✔ Success</h3>
         <p style="color:white;">
           Transfer request submitted.<br>
@@ -345,62 +254,10 @@ function sendMoney() {
       </div>
     `;
 
-    document.getElementById("chat").innerText =
-      "Transfer request submitted. Please contact account owner for approval.";
-
     setTimeout(() => popup.remove(), 3000);
 
   }, 2000);
 }
-
-/* HISTORY */
-function generate() {
-  let types = ["Salary","Apple","Amazon","Transfer","Investment","Netflix","Uber","Fee"];
-
-  for (let i = 1; i <= 70; i++) {
-    let type = types[Math.floor(Math.random() * types.length)];
-    let amount = Math.floor(Math.random() * 4000) + 100;
-    let credit = Math.random() > 0.5;
-
-    let date = new Date();
-    date.setDate(date.getDate() - i * 3);
-
-    all.push({
-      time: date.toLocaleString(),
-      type,
-      amount,
-      credit
-    });
-  }
-}
-
-function loadMore() {
-  for (let i = loaded; i < loaded + 10 && i < all.length; i++) {
-    txns.innerHTML += `
-      <div class="txn">
-        <span>${all[i].time} - ${all[i].type}</span>
-        <span class="${all[i].credit ? 'credit' : 'debit'}">
-          ${all[i].credit ? '+' : '-'}$${all[i].amount}
-        </span>
-      </div>
-    `;
-  }
-  loaded += 10;
-}
-
-function toggleHistory() {
-  let h = document.getElementById("history");
-  h.style.display = h.style.display === "block" ? "none" : "block";
-  if (loaded === 0) loadMore();
-}
-
-document.getElementById("history").addEventListener("scroll", function () {
-  if (this.scrollTop + this.clientHeight >= this.scrollHeight - 5) {
-    loadMore();
-  }
-});
-
-generate();
 
 </script>
 
