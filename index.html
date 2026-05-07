@@ -13,28 +13,60 @@
     }
 
     body {
-      background: #f4f6fb;
-      min-height: 100vh;
-    }
-
-    /* Top bar */
-    .header {
-      background: #0b1f3a;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0b1f3a, #1e3a8a);
       color: white;
-      padding: 15px 20px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    /* Main container */
-    .container {
+      text-align: center;
       padding: 20px;
-      max-width: 900px;
-      margin: auto;
     }
 
-    /* Balance card */
-    .card {
+    .container {
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+      color: #0b1f3a;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #e5e7eb;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Welcome to Novatrust</h1>
+    <p>Your secure digital banking experience starts here</p>
+
+    <button class="btn">Login</button>
+  </div>
+
+</body>
+</html>    .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
